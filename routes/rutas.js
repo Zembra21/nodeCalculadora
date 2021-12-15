@@ -5,15 +5,25 @@ var usuariosC = require('../controladores/usuariosController.js').usuarios
 
 
 
-app.get('/',function(request, response){
-    response.send('hola mundo')
-})
+//app.get('/',function(request, response){
+ //   response.send('hola mundo raro')
+//})
 
 app.get('/sumar/:valor1/:valor2',function(request, response){
     var a = parseInt( request.params.valor1)
     var b = parseInt( request.params.valor2)
     var c = a+b
-    response.send('El valor es: ' + c)
+    response.json({data: 'El valor es: ' + c})
+})
+
+
+
+app.post('/saludo', function(request, response){
+    var nombre = request.body.nombre;
+    var apellido = request.body.apellido;
+
+    response.json({state:true, mensaje: 'ok', resultado: 'Hola ' + nombre + ' ' + apellido})
+
 })
 
 // OPERACION DE SUMA +++++++++++++++
@@ -62,7 +72,6 @@ app.post('/operaciones/restar', function(request, response){
 
 
 
-
 // OPERACION DE MULTIPLICACION xxxxxxxxxxxxxxxxx
 
 
@@ -88,8 +97,6 @@ app.post('/operaciones/multiplicar', function(request, response){
 
 
 
-
-
 // OPERACION DE DIVISION ///////////////////
 
 
@@ -110,4 +117,25 @@ app.post('/operaciones/division', function(request, response){
     var c = a / b;
 
     response.json({state:true, mensaje: 'ok', resultado: 'La división de ' + a + ' y ' + b + ' es:' + c})
+})
+
+
+
+var VendedoresC = require('../controladores/vendedoresController.js').vendedores
+
+
+app.post('/vendedores/guardar',function(request,response){
+    VendedoresC.guardar(request,response)
+})
+
+app.post('/vendedores/listar',function(request,response){
+    VendedoresC.listar(request,response)
+})
+
+app.post('/vendedores/modificar',function(request,response){
+    VendedoresC.modificar(request,response)
+})
+
+app.post('/vendedores/eliminar',function(request,response){
+    VendedoresC.eliminar(request,response)
 })

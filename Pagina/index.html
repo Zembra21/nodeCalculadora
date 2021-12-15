@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    
+
+
+
+    <div id="formulario" style="width: 50%; margin-left: 25%; margin-top: 100px; background-color: lightcoral; border-radius: 20px; padding: 100px;">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="email" class="form-control" id="nombre">
+        </div>
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="email" class="form-control" id="apellido">
+          </div>
+        
+        <button type="submit" class="btn btn-primary" onclick="enviar()">Enviar</button>
+        <div id="contenido"></div>
+      </div>
+
+
+
+
+      <div id="formularioSuma" style="width: 50%; margin-left: 25%; margin-top: 100px; background-color: lightcoral; border-radius: 20px; padding: 100px;">
+        <div class="mb-3">
+          <label for="Valor1" class="form-label">Valor1</label>
+          <input type="email" class="form-control" id="Valor1">
+        </div>
+        <div class="mb-3">
+            <label for="Valor2" class="form-label">Valor2</label>
+            <input type="email" class="form-control" id="Valor2">
+          </div>
+        
+        <button type="submit" class="btn btn-primary" onclick="calcular()">Calcular</button>
+        <div id="contenido2"></div>
+      </div>
+
+
+
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+
+
+    <script>
+
+      function Peticion(tipo,url,datos,callback){
+
+
+        var nombre = document.getElementById('nombre').value
+        var apellido = document.getElementById('apellido').value
+        console.log(nombre)
+        console.log(apellido)
+
+        var data = datos;
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.open(tipo, url);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.send(data);
+
+            xhr.addEventListener("readystatechange", function() {
+              if(this.readyState === 4) {
+               
+                var respuesta = JSON.parse(this.responseText)
+                return callback(respuesta)
+                
+              }
+            });
+      }
+
+
+
+
+
+      function enviar(){
+ console.log('enviando')
+        var nombre = document.getElementById('nombre').value
+        var apellido = document.getElementById('apellido').value
+        var data = "nombre="+ nombre +"&apellido=" + apellido+ "";
+        Peticion("POST","http://localhost:3000/saludo",data,function(respuestapeticion){
+
+          var contenido = document.getElementById('contenido')
+          contenido.innerHTML = respuestapeticion.resultado
+
+        })
+
+                
+              
+      }
+
+
+      function calcular(){
+        console.log('enviando')
+        var Valor1 = document.getElementById('Valor1').value
+        var Valor2 = document.getElementById('Valor2').value
+        var data = null;
+
+        Peticion("GET","http://localhost:3000/sumar/"+ Valor1 +"/"+ Valor2 +"",data,function(respuestapeticion){
+
+var contenido = document.getElementById('contenido2')
+contenido.innerHTML = respuestapeticion.data
+
+})
+    
+
+      }
+    </script>
+
+  </body>
+</html>
